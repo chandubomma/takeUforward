@@ -95,10 +95,10 @@ const CodeSubmissionForm = () => {
       }
 
   return (
-    <div className='md:w-1/2 mx-auto pt-10'>
+    <div className='md:w-1/2 mx-auto pt-4'>
       <form>
         <div className='flex w-full'>
-            <div className="form-floating w-1/2 mx-1 mb-4">
+            <div className="form-floating w-1/2 mx-1 mb-2">
                 <input
                     className="form-control border-2 focus:shadow-none focus:border-gray-300 rounded-sm"
                     id="username"
@@ -249,7 +249,7 @@ const  InputOutput  = ({stdin,stdout,setStdin,setStdout,handleSubmit,activeTab,s
     };
   
     return (
-      <div className="flex flex-col h-[18rem] mt-2">
+      <div className="flex flex-col h-[16rem] mt-2">
         <div className='flex justify-between'>
         <div className="flex">
           <button
