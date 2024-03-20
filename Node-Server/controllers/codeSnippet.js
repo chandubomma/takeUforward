@@ -59,7 +59,7 @@ const submitCode = async (code_language, stdin, source_code) => {
         headers: {
             'content-type': 'application/json',
             'X-RapidAPI-Key': JUDGE0CE_API_KEY,
-            'X-RapidAPI-Host': JUDGE0CE_API_HOST
+            'X-RapidAPI-Host': "judge0-ce.p.rapidapi.com"
         },
         body: JSON.stringify({
             language_id: code_language,
