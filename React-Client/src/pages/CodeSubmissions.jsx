@@ -13,6 +13,7 @@ import { FaArrowAltCircleLeft } from "react-icons/fa";
 
 const CodeSubmissions = () => {
     const [submissions,setSubmissions] = useState(null)
+    const [isLoading,setLoading] = useState(false);
     const fetchSubmissions = async()=>{
         const url = `${import.meta.env.VITE_API}/api/code-snippets`
         try{
@@ -27,7 +28,6 @@ const CodeSubmissions = () => {
                 return [];
               }
               const result = await response.json();
-              console.log(result)
               return result.result;
         }catch(error){
             console.log(error);
@@ -37,9 +37,11 @@ const CodeSubmissions = () => {
 
     useEffect(()=>{
         const fetchData = async()=>{
+            setLoading(true)
             const data  = await fetchSubmissions();
             if(data)data.reverse()
             setSubmissions(data);
+            setLoading(false);
         }
         fetchData()
     },[])
@@ -50,7 +52,7 @@ const CodeSubmissions = () => {
             <h1 className='text-xl font-bold text-gray-800 mt-2'>Submissions</h1>
         </div>
         <div className='w-full max-w-[80rem] mx-auto'>
-            <Table className="mt-4 overflow-auto h-[40rem] border border-gray-200 no-scrollbar">
+            <Table className="mt-4 overflow-auto h-[35rem] border border-gray-200 no-scrollbar">
                 <TableHead className="bg-gray-200">
                 <TableRow>
                     <TableHeaderCell className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">id</TableHeaderCell>
@@ -63,7 +65,18 @@ const CodeSubmissions = () => {
                 </TableRow>
                 </TableHead>
                 <TableBody className="bg-white divide-y divide-gray-200">
-                {submissions && submissions.map((submission) => (
+                {
+                    isLoading && 
+                    <div>
+                        <TableRowSkeleton/>
+                        <TableRowSkeleton/>
+                        <TableRowSkeleton/>
+                        <TableRowSkeleton/>
+                        <TableRowSkeleton/>
+                        <TableRowSkeleton/>
+                    </div>
+                }
+                {!isLoading && submissions && submissions.map((submission) => (
                     <TableRow key={submission.id}>
                     <TableCell className="px-6 py-4 whitespace-nowrap">{submission.id}</TableCell>
                     <TableCell className="px-6 py-4 whitespace-nowrap">{submission.username}</TableCell>
@@ -82,3 +95,18 @@ const CodeSubmissions = () => {
 }
 
 export default CodeSubmissions
+
+
+const TableRowSkeleton = ()=>{
+    return (
+        <TableRow>
+            <TableCell><div className='w-40 h-12 bg-gray-200 animate-pulse m-1 rounded-sm'></div></TableCell>
+            <TableCell><div className='w-40 h-12 bg-gray-200 animate-pulse m-1 rounded-sm'></div></TableCell>
+            <TableCell><div className='w-40 h-12 bg-gray-200 animate-pulse m-1 rounded-sm'></div></TableCell>
+            <TableCell><div className='w-40 h-12 bg-gray-200 animate-pulse m-1 rounded-sm'></div></TableCell>
+            <TableCell><div className='w-40 h-12 bg-gray-200 animate-pulse m-1 rounded-sm'></div></TableCell>
+            <TableCell><div className='w-40 h-12 bg-gray-200 animate-pulse m-1 rounded-sm'></div></TableCell>
+            <TableCell><div className='w-40 h-12 bg-gray-200 animate-pulse m-1 rounded-sm'></div></TableCell>
+        </TableRow>
+    )
+}
