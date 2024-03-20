@@ -12,6 +12,7 @@ const CodeSubmissionForm = () => {
     const [stdin, setStdin] = useState('');
     const [stdout, setStdout] = useState('');
     const [activeTab, setActiveTab] = useState('stdin');
+    const [submit,setSubmit] = useState(false)
     const [code,setCode] = useState(`#include <iostream>\nusing namespace std;\n\nint main() {\n    // Write your code here\n    return 0;\n}`);
     const getInitialCode = (lang) => {
         switch (lang) {
@@ -69,6 +70,7 @@ const CodeSubmissionForm = () => {
             stdin : stdin
         }
         try{
+            setSubmit(true)
             const response = await fetch(url, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -81,9 +83,11 @@ const CodeSubmissionForm = () => {
                 return;
             }
             toast.success('Code submitted successfully')
+            setSubmit(false)
             setCode(getInitialCode(codeLanguage))
             setStdin('')
             setStdout('')
+            setActiveTab('stdin')
         }catch(error){
             console.log(error);
             toast.error('Something went wrong. Please try again!')
@@ -140,6 +144,7 @@ const CodeSubmissionForm = () => {
                 handleSubmit={handleSubmit}
                 activeTab={activeTab}
                 setActiveTab={setActiveTab}
+                submit = {submit}
             />
         </div>
       </form>
@@ -229,7 +234,7 @@ const CodeEditor = ({code,setCode,handleRefresh,handleRunCode,setActiveTab,setSt
 
 
 
-const  InputOutput  = ({stdin,stdout,setStdin,setStdout,handleSubmit,activeTab,setActiveTab}) => {
+const  InputOutput  = ({stdin,stdout,setStdin,setStdout,handleSubmit,activeTab,setActiveTab,submit}) => {
    
     const handleTabChange = (tab) => {
       setActiveTab(tab);
@@ -274,11 +279,11 @@ const  InputOutput  = ({stdin,stdout,setStdin,setStdout,handleSubmit,activeTab,s
             Go to Submissions
           </button> */}
         <button
-            className={`px-3 py-1.5 text-lg font-medium hover:bg-gray-600 text-gray-100 bg-gray-500 mb-2`}
+            className={`w-24 h-10 text-lg font-medium hover:bg-gray-600 text-gray-100 bg-gray-500 mb-2`}
             onClick={handleSubmit}
             type="button"
           >
-            Submit
+            {submit?<Spinner size={'sm'}/>:'Submit'}
           </button>
         </div>
         </div>
@@ -304,7 +309,7 @@ const  InputOutput  = ({stdin,stdout,setStdin,setStdout,handleSubmit,activeTab,s
   
     return (
       <div className="flex justify-center items-center">
-        <div className={`spinner-border text-gray-500 ${spinnerSizeClass} ${animationDurationClass}`} role="status">
+        <div className={`spinner-border text-gray-200 ${spinnerSizeClass} ${animationDurationClass}`} role="status">
           <span className="sr-only">Loading...</span>
         </div>
       </div>
