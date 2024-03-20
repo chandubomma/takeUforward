@@ -1,6 +1,7 @@
 import express from 'express';
 import initRoutes from './routes/routes.js';
 import cors from "cors";
+import ErrorHandler from "./middleware/errorHandler.js";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -12,6 +13,8 @@ app.use(cors())
 
 // Routes
 app.use("/api", initRoutes());
+
+app.use(ErrorHandler);
 
 // Start the server
 app.listen(PORT,() => {

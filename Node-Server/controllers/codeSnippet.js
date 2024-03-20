@@ -5,7 +5,7 @@ import { JUDGE0CE_API_KEY,JUDGE0CE_API_HOST } from '../config/index.js'
 import * as ID from '../constants/codeLanguages.js'
 import fetch from 'node-fetch';
 
-export const submit = async(req,res)=>{
+export const submit = async(req,res,next)=>{
     const {
         username,
         code_language,
@@ -30,10 +30,11 @@ export const submit = async(req,res)=>{
         })
     }catch(error){
         console.error('Error inserting code snippet : ',error)
+        next(error)
     }
 }
 
-export const runCode = async(req,res)=>{
+export const runCode = async(req,res,next)=>{
     const {
         code_language,
         stdin,
@@ -49,6 +50,7 @@ export const runCode = async(req,res)=>{
         })
     }catch(error){
         console.error('Error running code snippet : ',error)
+        next(error)
     }
 }
 
@@ -104,7 +106,7 @@ const getCodeLanguageId = (code_language)=>{
     return id;
 }
 
-export const getCodeSnippets = async(req,res)=>{
+export const getCodeSnippets = async(req,res,next)=>{
     
     try {
         const cachedSnippets = await checkCacheAndGet('codeSnippets');
@@ -125,5 +127,6 @@ export const getCodeSnippets = async(req,res)=>{
         }
       }catch(error){
         console.error('Error getting code snippets : ',error)
+        next(error)
     }
 }
