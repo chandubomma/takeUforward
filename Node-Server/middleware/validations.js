@@ -32,3 +32,17 @@ export const submitCodeSnippet = async(req,res,next)=>{
     })
     await validate(schema,req,res,next);
 }
+
+export const runCodeSnippet = async(req,res,next)=>{
+    const schema = Joi.object({
+        code_language : Joi.string().allow(
+            'C++',
+            'Java',
+            'JavaScript', 
+            'Python'
+        ),
+        stdin : Joi.string().allow(''),
+        source_code : Joi.string().required()
+    })
+    await validate(schema,req,res,next);
+}

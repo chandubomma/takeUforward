@@ -33,6 +33,25 @@ export const submit = async(req,res)=>{
     }
 }
 
+export const runCode = async(req,res)=>{
+    const {
+        code_language,
+        stdin,
+        source_code,
+    } = req.body
+    const code_language_id = getCodeLanguageId(code_language);
+    try{
+        const result = await submitCode(code_language_id,stdin,source_code);
+        res.status(200).send({
+            status : 200,
+            message : 'code snippet submitted!',
+            result : result,
+        })
+    }catch(error){
+        console.error('Error running code snippet : ',error)
+    }
+}
+
 const submitCode = async (code_language, stdin, source_code) => {
     const url = 'https://judge0-ce.p.rapidapi.com/submissions?base64_encoded=false&wait=true&fields=*';
     const options = {
@@ -101,7 +120,7 @@ export const getCodeSnippets = async(req,res)=>{
           res.status(200).send({
             status: 200,
             message: 'Code snippets retrieved from database!',
-            snippets: snippets[0]
+            result: snippets[0]
           });
         }
       }catch(error){

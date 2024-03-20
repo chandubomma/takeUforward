@@ -5,6 +5,7 @@ import * as controller from '../controllers/codeSnippet.js'
 const initRoutes = ()=>{
     const routes = express.Router();
         routes.route('/submit-code-snippet').post(validations.submitCodeSnippet,controller.submit)
+        routes.route('/run-code').post(validations.runCodeSnippet,controller.runCode)
         routes.route('/code-snippets').get(controller.getCodeSnippets)
     return routes;
 }
